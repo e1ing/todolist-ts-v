@@ -17,7 +17,6 @@ export type TaskType = {
 type PropsType = {
     id: string
     title: string
-    tasks: Array<TaskType>
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     filter: FilterValuesType,
     removeTodolist: (todolistId: string) => void
@@ -44,6 +43,19 @@ export function Todolist(props: PropsType) {
     const changeTodolistTitle = (newTitle: string) => {
         props.changeTodolistTitle (props.id, newTitle)
     }
+
+
+    let allTodolistTasks = tasks;
+
+        let tasksForTodolist = allTodolistTasks;
+
+        if (props.filter === "completed") {
+            tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true)
+        }
+        if (props.filter === "active") {
+            tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false)
+        }
+
 
     return (<div>
             <h3> <EditableSpan title={props.title} onChange={changeTodolistTitle}/>

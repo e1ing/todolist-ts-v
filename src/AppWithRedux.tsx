@@ -31,7 +31,7 @@ function AppWithRedux() {
     const todolists = useSelector<AppRootState, Array<TodolistType>>(state => state.todolists)
 
     let removeTodolist = (todolistId: string) => {
-        dispatch (removeTodolistAC(todolistId))
+        dispatch(removeTodolistAC(todolistId))
     }
 
     function addTodolist(title: string) {
@@ -43,10 +43,8 @@ function AppWithRedux() {
     }
 
     function changeFilter(todolistId: string, value: FilterValuesType) {
-        dispatch (changeTodolistFilterAC(todolistId, value))
+        dispatch(changeTodolistFilterAC(todolistId, value))
     }
-
-
 
 
     return (
@@ -70,34 +68,24 @@ function AppWithRedux() {
                 </Grid>
 
                 <Grid container spacing={3}>
-                        {
-                            todolists.map((tl) => {
+                    {
 
-                                let tasksForTodolist = tasks[tl.id];
-
-                                if (tl.filter === "completed") {
-                                    tasksForTodolist = tasksForTodolist.filter(t => t.isDone === true)
-                                }
-                                if (tl.filter === "active") {
-                                    tasksForTodolist = tasksForTodolist.filter(t => t.isDone === false)
-                                }
-
-                                return <Grid item>
-                                    <Paper style={{padding: "10px"}}>
-                                <Todolist
-                                    key={tl.id}
-                                    id={tl.id}
-                                    title={tl.title}
-                                    tasks={tasksForTodolist}
-                                    changeFilter={changeFilter}
-                                    filter={tl.filter}
-                                    removeTodolist={removeTodolist}
-                                    changeTodolistTitle={changeTodolistTitle}
-                                />
-                                    </Paper>
-                                </Grid>
-                            })
-                        }
+                        todolists.map((tl) => {
+                            return <Grid item>
+                                <Paper style={{padding: "10px"}}>
+                                    <Todolist
+                                        key={tl.id}
+                                        id={tl.id}
+                                        title={tl.title}
+                                        changeFilter={changeFilter}
+                                        filter={tl.filter}
+                                        removeTodolist={removeTodolist}
+                                        changeTodolistTitle={changeTodolistTitle}
+                                    />
+                                </Paper>
+                            </Grid>
+                        })
+                    }
                 </Grid>
 
             </Container>
