@@ -1,4 +1,4 @@
-import {FilterValuesType, TasksStateType, TodolistType} from "../App";
+import {FilterValuesType, TasksStateType} from "../App";
 import {v1} from "uuid";
 import {AddTodolistAT, RemoveTodolistAT} from "./todolists-reducer";
 
@@ -28,11 +28,11 @@ type ChangeTaskTitleAT= {
     todolistId: string
 }
 
-
+const initialState: TasksStateType = {}
 
 type ActionsType = RemoveTaskAT | AddTaskAT | ChangeTaskStatusAT| ChangeTaskTitleAT |AddTodolistAT|RemoveTodolistAT
 
-export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             const stateCopy = {...state}
@@ -57,6 +57,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
         case 'CHANGE_TASK_STATUS': {
             const stateCopy = {...state}
             let tasks = stateCopy[action.todolistId]
+            stateCopy[action.todolistId] = tasks.map(t => action.taskId ? {...t, isDone: action.isDone } : t)
             let task = tasks.find(t => t.id === action.taskId);
             if (task) {
                 task.isDone = action.isDone;
@@ -86,8 +87,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             return stateCopy;
         }
 
-        default:
-            throw new Error("I don't understand this type")
+        default: return state;
 
     }
 
