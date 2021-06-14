@@ -9,7 +9,6 @@ import {useDispatch} from "react-redux";
 type TaskPropsType = {
     task: TaskType
     todolistId: string
-
 }
 export const Task: React.FC<TaskPropsType> = React.memo( (
     {task,todolistId}) => {
@@ -31,11 +30,11 @@ export const Task: React.FC<TaskPropsType> = React.memo( (
         <Checkbox
             checked={task.isDone}
             color="primary"
-            onChange={changeTaskStatus}
+            onChange={(e) => changeTaskStatus(task.id, e.currentTarget.checked,todolistId)}
         />
 
-        <EditableSpan title={task.title} onChange={changeTaskTitle} />
-        <IconButton onClick={removeTask}>
+        <EditableSpan title={task.title} onChange={(newTitle) => changeTaskTitle(task.id, newTitle, todolistId)} />
+        <IconButton onClick={() => removeTask(task.id, todolistId)}>
             <Delete />
         </IconButton>
     </div>
