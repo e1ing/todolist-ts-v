@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 
 export type FilterValuesType = "all" | "active" | "completed";
+
 export type TodolistType = {
     id: string
     title: string
@@ -27,8 +28,6 @@ export type TasksStateType = {
 }
 
 function AppWithRedux() {
-    let todolistId1 = v1();
-    let todolistId2 = v1();
 
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
@@ -96,8 +95,6 @@ function AppWithRedux() {
                         todolists.map(tl => {
                             let allTodolistTasks = tasks[tl.id];
                             let tasksForTodolist = allTodolistTasks;
-
-
 
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: "10px"}}>
