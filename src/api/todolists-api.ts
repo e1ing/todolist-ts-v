@@ -68,7 +68,7 @@ export type TaskType ={
     addedDate: string
 }
 
-export type UpdateTaskModel = {
+export type UpdateTaskType = {
     title: string
     description: string
     completed: boolean
