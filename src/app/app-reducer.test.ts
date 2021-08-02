@@ -1,21 +1,22 @@
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+import { v1 } from "uuid"
+import {appReducer, InitialStateType, setAppErrorAC, setAppStatusAC } from "./app-reducer"
 
-const initialState = {
-    status: 'loading' as RequestStatusType,
-    error: "some erorr"
-}
+let startState: InitialStateType
 
-type InitialStateType = typeof initialState
-
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        default:
-            return state
+beforeEach(() => {
+    startState = {
+        error: null,
+        status: "idle"
     }
-}
+})
 
-type ActionsType = any
+test ("correct error message should be send", () => {
+  const endState = appReducer(startState, setAppErrorAC("some error"))
+  expect(endState.error).toBe("some error");
+})
+
+test ("correct status should be send", () => {
+    const endState = appReducer(startState, setAppStatusAC("loading"))
+    expect(endState.status).toBe("loading");
+})
+
