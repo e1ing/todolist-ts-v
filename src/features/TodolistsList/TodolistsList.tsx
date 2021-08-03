@@ -15,14 +15,20 @@ import {TaskStatuses} from '../../api/todolists-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
+import {RequestStatusType} from "../../app/app-reducer";
+import { Redirect } from 'react-router-dom'
 
 export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const dis = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppRootStateType, boolean> (state => state.auth.isLoggedIn)
+
+
 
     useEffect(() => {
-        if (demo){
+        if (demo|| !isLoggedIn){
             return;
         }
         const thunk = fetchTodolistsTC()
@@ -69,10 +75,13 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
         dispatch(thunk)
     }, [dispatch])
 
+    if (!isLoggedIn) {
+        return <Redirect to={"/login"}/>
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolist} disabled={dis === 'loading'}/>
         </Grid>
         <Grid container spacing={3}>
             {
@@ -91,6 +100,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
+                                disabled={dis === 'loading'}
                             />
                         </Paper>
                     </Grid>
