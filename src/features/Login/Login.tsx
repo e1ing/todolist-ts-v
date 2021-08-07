@@ -13,15 +13,12 @@ export const Login = () => {
 
     const formik = useFormik({
         validate: (values) => {
-            const errors = {} as {email: string , password: string}
             if (!values.email) {
-                errors.email = 'Email is required'
+                return {email: 'Email is required'}
             }
             if (!values.password) {
-                errors.password = 'Password is required'
+                return {password: 'Password is required'}
             }
-
-            return errors
         },
         initialValues: {
             email: "",
