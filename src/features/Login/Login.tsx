@@ -41,6 +41,7 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginTC(values))
+            formik.resetForm();
         }
     })
 
@@ -50,8 +51,7 @@ export const Login = () => {
 
     return <Grid container justify="center">
         <Grid item xs={4}>
-            <form onSubmit={() => {
-            }}>
+            <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
                         <p>To log in get registered
@@ -69,14 +69,22 @@ export const Login = () => {
                             margin="normal"
                             {...formik.getFieldProps("email")}
                         />
-                        {formik.errors.email && formik.touched.email ? <div>{formik.errors.email}</div> : null}
+
+                        {formik.touched.email &&
+                        formik.errors.email &&
+                        <div style={{color: "red"}}>{formik.errors.email}</div>}
+
                         <TextField
                             type="password"
                             label="Password"
                             margin="normal"
                             {...formik.getFieldProps("password")}
                         />
-                        {formik.errors.password && formik.touched.password ? <div>{formik.errors.password}</div> : null}
+
+                        {formik.touched.password &&
+                        formik.errors.password &&
+                        <div style={{color: "red"}}>{formik.errors.password}</div>}
+
                         <FormControlLabel
                             label={'Remember me'}
                             control={<Checkbox/>}

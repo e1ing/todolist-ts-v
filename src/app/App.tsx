@@ -60,8 +60,8 @@ function App({demo = false}: AppPropsType) {
                         <Route exact path={"/"} render={() => <TodolistsList demo={demo}/>}/>
                         <Route path={"/login"} render={() => <Login/>}/>
                         <Route path={"/404"}
-                               render={() => <h1 style={{fontSize: "50px", textAlign: "center"}}>404: page not
-                                   found</h1>}/>
+                               render={() => <h1 style={{fontSize: "50px", textAlign: "center"}}>
+                                   404: page not found</h1>}/>
                         <Redirect from={"*"} to={"/404"}/>
                     </Switch>
                 </Container>
