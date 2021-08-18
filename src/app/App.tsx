@@ -39,7 +39,7 @@ function App({demo = false}: AppPropsType) {
     }
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <div className="App">
                 <ErrorSnackbar/>
                 <AppBar position="static">
