@@ -15,14 +15,18 @@ import {TaskStatuses} from '../../api/todolists-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
-import {RequestStatusType} from "../../app/app-reducer";
 import { Redirect } from 'react-router-dom'
+import {RequestStatusType} from "../../app/app-reducer";
+
+type TodolistsListPropsType = {
+    demo?: boolean
+}
 
 export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
+    const dispatch = useDispatch()
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dis = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    const dispatch = useDispatch()
     const isLoggedIn = useSelector<AppRootStateType, boolean> (state => state.auth.isLoggedIn)
 
 
@@ -81,7 +85,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolist} disabled={dis === 'loading'}/>
+            <AddItemForm addItem={addTodolist} disabled={status === 'loading'}/>
         </Grid>
         <Grid container spacing={3}>
             {
@@ -100,7 +104,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
-                                disabled={dis === 'loading'}
+                                disabled={status === 'loading'}
                             />
                         </Paper>
                     </Grid>
@@ -110,6 +114,3 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo=false}) => {
     </>
 }
 
-type TodolistsListPropsType = {
-    demo?: boolean
-}

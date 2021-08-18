@@ -2,9 +2,11 @@ import {Dispatch} from "redux"
 import {SetAppErrorAT, setAppStatusAC, SetAppStatusAT} from "../../app/app-reducer";
 import {authAPI, LoginParamsType} from "../../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+//types
+type ActionsType = ReturnType<typeof setIsLoggedInAC>|SetAppErrorAT|SetAppStatusAT
+type InitialStateType = typeof initialState
 
-
-const initialState: InitialStateType = {
+const initialState = {
     isLoggedIn: false
 }
 
@@ -54,8 +56,4 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
         })
 }
 
-//types
-type ActionsType = ReturnType<typeof setIsLoggedInAC>|SetAppErrorAT|SetAppStatusAT
-type InitialStateType = {
-    isLoggedIn: boolean
-}
+
