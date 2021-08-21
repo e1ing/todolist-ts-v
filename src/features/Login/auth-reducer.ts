@@ -1,37 +1,34 @@
 import {Dispatch} from "redux"
-import {SetAppErrorAT, setAppStatusAC, SetAppStatusAT} from "../../app/app-reducer";
+import {setAppStatusAC} from "../../app/app-reducer";
 import {authAPI, LoginParamsType} from "../../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-//types
-type ActionsType = ReturnType<typeof setIsLoggedInAC>|SetAppErrorAT|SetAppStatusAT
-type InitialStateType = typeof initialState
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case "login/SET-IS-LOGGED-IN":
-            return {...state, isLoggedIn: action.value}
-        default:
-            return state
+const authSlice = createSlice({
+    name: "auth",
+    initialState: initialState,
+    reducers: {
+        setIsLoggedInAC: (state, action : PayloadAction<{value: boolean}>) => {
+            state.isLoggedIn = action.payload.value
+        }
     }
-}
+})
+
+export const authReducer = authSlice.reducer;
+export const {setIsLoggedInAC} = authSlice.actions
 
 
-//action creator
-
-export const setIsLoggedInAC = (value: boolean) => ({type: "login/SET-IS-LOGGED-IN", value} as const)
-
-//thunk creators
-export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatusAC("loading"))
+export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: "loading"}))
     authAPI.login(data)
         .then(res=> {
             if (res.data.resultCode===0){
-              dispatch(setIsLoggedInAC(true))
-                dispatch(setAppStatusAC("succeeded"))
+              dispatch(setIsLoggedInAC({value: false}))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             }else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -40,13 +37,13 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
             handleServerNetworkError(error, dispatch)
         })
 }
-export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatusAC("loading"))
+export const logoutTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: "loading"}))
     authAPI.logout()
         .then(res=> {
             if (res.data.resultCode===0){
-                dispatch(setIsLoggedInAC(false))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setIsLoggedInAC({value: false}))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             }else {
                 handleServerAppError(res.data, dispatch)
             }

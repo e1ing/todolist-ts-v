@@ -1,7 +1,7 @@
 import { v1 } from "uuid"
 import {appReducer, InitialStateType, setAppErrorAC, setAppStatusAC } from "./app-reducer"
 
-let startState: InitialStateType
+let startState: any
 
 beforeEach(() => {
     startState = {
