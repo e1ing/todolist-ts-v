@@ -30,7 +30,7 @@ const todolistsSlice = createSlice({
         setTodolistsAC: (state, action: PayloadAction<{ todolists: Array<TodolistType> }>) => {
             return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: "idle"}))
         },
-        changeTodolistEntitiStatusAC: (state, action: PayloadAction<{ id: string, status: RequestStatusType }>) => {
+        changeTodolistEntityStatusAC: (state, action: PayloadAction<{ id: string, status: RequestStatusType }>) => {
             const index = state.findIndex(tl => tl.id !== action.payload.id);
             state[index].entityStatus = action.payload.status
         }
@@ -40,7 +40,7 @@ const todolistsSlice = createSlice({
 
 export const todolistsReducer = todolistsSlice.reducer
 export const {removeTodolistAC, addTodolistAC, changeTodolistTitleAC,
-    changeTodolistFilterAC, setTodolistsAC, changeTodolistEntitiStatusAC} = todolistsSlice.actions
+    changeTodolistFilterAC, setTodolistsAC, changeTodolistEntityStatusAC} = todolistsSlice.actions
 
 
 
@@ -60,7 +60,7 @@ export const fetchTodolistsTC = () => {
 export const removeTodolistTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setAppStatusAC({status: "loading"}))
-        dispatch(changeTodolistEntitiStatusAC({id: todolistId, status: "loading"}))
+        dispatch(changeTodolistEntityStatusAC({id: todolistId, status: "loading"}))
         todolistsAPI.deleteTodolist(todolistId)
             .then((res) => {
                 dispatch(removeTodolistAC({id: todolistId}))

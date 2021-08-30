@@ -39,34 +39,32 @@ function App({demo = false}: AppPropsType) {
     }
 
     return (
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <div className="App">
-                <ErrorSnackbar/>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu">
-                            <Menu/>
-                        </IconButton>
-                        <Typography variant="h6">
-                            News
-                        </Typography>
-                        {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
+        <div className="App">
+            <ErrorSnackbar/>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        News
+                    </Typography>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
 
-                    </Toolbar>
-                    {status === "loading" && <LinearProgress/>}
-                </AppBar>
-                <Container fixed>
-                    <Switch>
-                        <Route exact path={"/"} render={() => <TodolistsList demo={demo}/>}/>
-                        <Route path={"/login"} render={() => <Login/>}/>
-                        <Route path={"/404"}
-                               render={() => <h1 style={{fontSize: "50px", textAlign: "center"}}>
-                                   404: page not found</h1>}/>
-                        <Redirect from={"*"} to={"/404"}/>
-                    </Switch>
-                </Container>
-            </div>
-        </BrowserRouter>
+                </Toolbar>
+                {status === "loading" && <LinearProgress/>}
+            </AppBar>
+            <Container fixed>
+                <Switch>
+                    <Route exact path={"/"} render={() => <TodolistsList demo={demo}/>}/>
+                    <Route path={"/login"} render={() => <Login/>}/>
+                    <Route path={"/404"}
+                           render={() => <h1 style={{fontSize: "50px", textAlign: "center"}}>
+                               404: page not found</h1>}/>
+                    <Redirect from={"*"} to={"/404"}/>
+                </Switch>
+            </Container>
+        </div>
     )
 
 }
